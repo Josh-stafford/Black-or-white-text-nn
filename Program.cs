@@ -9,7 +9,8 @@ namespace Black_white_text_NN
 
             // Parameters
             float learningRate = 0.05f;
-            int iterationCount = 1000;
+            int epochCount = 1000;
+            int bias = 1;
 
             // Colour RGB Values
             int[] pink = new int[3] { 244, 66, 161 };
@@ -22,22 +23,39 @@ namespace Black_white_text_NN
             int[] blue = new int[3] { 0, 0, 255 };
             int[] darkBlue = new int[3] { 18, 0, 140 };
 
-
             // Training input data
             int[][] trainX = new int[][] { pink, lightBlue, black, white, yellow, green, red, blue, darkBlue };
 
             // Training output data
-            // 0 = White
-            // 1 = Black
-            int[] trainy = new int[9] { 1, 1, 0, 1, 1, 1, 1, 0, 0 };
+            // 1, 0 = White
+            // 0, 1 = Black
+            int[] pinkAnswer = new int[2] { 0, 1 };
+            int[] lightBlueAnswer = new int[2] { 0, 1 };
+            int[] blackAnswer = new int[2] { 1, 0 };
+            int[] whiteAnswer = new int[2] { 0, 1 };
+            int[] yellowAnswer = new int[2] { 0, 1 };
+            int[] greenAnswer = new int[2] { 0, 1 };
+            int[] redAnswer = new int[2] { 0, 1 };
+            int[] blueAnswer = new int[2] { 1, 0 };
+            int[] darkBlueAnswer = new int[2] { 1, 0 };
+            int[][] trainy = new int[][] { pinkAnswer, lightBlueAnswer, blackAnswer, whiteAnswer, yellowAnswer, greenAnswer, redAnswer, blueAnswer, darkBlueAnswer };
 
+            // Hidden Layer Array
+            float[] hiddenLayerNodes = new float[4] { 0, 0, 0, 0 };
+        
             // Hidden Layer Weights
-            int[] weights = new int[4] { 0, 0, 0, 0 };
+            float[] hiddenWeights = new float[12] { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
 
-            double sig(int val)
+            // Output Layer Array
+            float[] outputLayerNodes = new float[2] { 0, 0 };
+
+            // Output Layer Weights
+            float[]  
+
+            float sig(float val)
             {
 
-                return (1f / (1f + (Math.Pow(2.71828f, val * -1f))));
+                return (float)(1f / (1f + (Math.Pow(2.71828f, val * -1f))));
 
             }
 
@@ -47,25 +65,47 @@ namespace Black_white_text_NN
                 // Randomize weights
                 Random rnd = new Random();
                 Console.WriteLine("Intial weights:");
-                for (var i = 0; i < weights.Length; i++)
+                for (int i = 0; i < hiddenWeights.Length; i++)
                 {
 
-                    weights[i] = rnd.Next(-5, 5);
-                    Console.WriteLine(weights[i]);
+                    hiddenWeights[i] = rnd.Next(-5, 5);
+                    Console.WriteLine(hiddenWeights[i]);
 
                 }
 
                 // Training loop
-                for (var i = 0; i < iterationCount; i++)
+                for (int i = 0; i < epochCount; i++)
                 {
 
-                    // Input nodes
-                    int inp1 = trainX[i][0];
-                    int inp2 = trainX[i][1];
-                    int inp3 = trainX[i][2];
+                    Console.WriteLine("Epoch Num: " + i.ToString());
 
-                    // Output data
-                    int wantedOut = trainy[i];
+                    for (int y = 0; y < trainX.Length; y++)
+                    {
+
+                        // Input nodes
+                        float inp1 = (float)trainX[y][0];
+                        float inp2 = (float)trainX[y][1];
+                        float inp3 = (float)trainX[y][2];
+
+                        // Output data
+                        int[] wantedOut = trainy[y];
+
+                        // Feedforward from inputs to hidden layer
+                        for (int x = 0; x < hiddenLayerNodes.Length; x++)
+                        {
+
+                            Console.WriteLine("Hidden node: " + x.ToString());
+                            hiddenLayerNodes[x] = sig((inp1 * hiddenWeights[x]) + (inp2 * hiddenWeights[x + 4]) + (inp3 * hiddenWeights[x + 8]) + bias);
+
+                        }
+
+                        // Feedforward from hidden layer to outputs
+
+
+
+                    }
+
+                    
 
                 }
 
